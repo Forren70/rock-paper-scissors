@@ -1,5 +1,7 @@
 # 🎮 Rock Paper Scissors / Sasso Carta Forbice
 
+**🔗 Play the game here: [Live Demo](https://forren70.github.io/rock-paper-scissors/)**
+
 A bilingual (Italian & English) implementation of the classic game, available as both a **Python console application** and a **Web-based interface**.
 
 ## 🚀 Project Overview
