@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            background-color: #4682B4; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 15px auto; 
+            background: #E1F5FE; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        button { 
+            font-size: 20px; 
+            margin: 10px; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            border: none; 
+            background-color: #007bff; 
+            color: white; 
+        }
+        button:hover { 
+            background-color: #0056b3; 
+        }
+        .result { 
+            margin-top: 20px; 
+        }
+        #result-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .score { 
+            font-size: 1.2em; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="margin-bottom: 5px;">Rock, Paper, Scissors</h1>
+    
+    <p id="welcome-msg" style="font-size: 1.2rem; font-weight: bold; margin-top: 20px;">
+        Welcome! Choose your move: Rock, Paper, or Scissors.
+    </p>
+
+    <p>Rock beats Scissors (crushes it). Scissors beat Paper (cut it). Paper beats Rock (covers it).</p>
+
+    <div id="game-buttons">
+        <button onclick="playGame('Rock')">Rock ✊</button>
+        <button onclick="playGame('Paper')">Paper ✋</button>
+        <button onclick="playGame('Scissors')">Scissors ✌️</button>
+    </div>
+
+    <div class="result">
+        <p id="pc-move-display" style="font-weight: bold; color: #333;"></p>
+        <p id="result-display"></p>
+    </div>
+
+    <div class="score">
+        <p style="color: #00008B; font-weight: bold;">
+            Rounds: <span id="round-counter">0</span>/15
+        </p>
+        <p style="color: #00008B; font-weight: bold;">
+            User Score: <span id="user-points">0</span> - PC Score: <span id="pc-points">0</span>
+        </p>
+    </div>
+
+    <p id="final-message" style="color: red; font-weight: bold; font-size: 1.8rem;"></p>
+    
+    <button id="btn-reset" onclick="resetGame()" style="display: none; background-color: #28a745;">Play Again 🔄</button>
+    <br>
+    <a href="index.html" style="display: inline-block; margin-top: 20px; text-decoration: none; color: #4682B4; font-weight: bold;">
+    🏠 Back to language selection
+</a>
+</div>
+
+<script>
+    // Global variables
+    let roundsPlayed = 0;
+    let userScore = 0;
+    let pcScore = 0;
+
+    function playGame(userChoice) {
+        if (roundsPlayed >= 15) return; 
+
+        const possibleMoves = ["Paper", "Scissors", "Rock"];
+        const pcChoice = possibleMoves[Math.floor(Math.random() * 3)];
+        
+        let roundOutcome = "";
+        let outcomeColor = "";
+        
+        // Comparison logic
+        if (userChoice === pcChoice) {
+            roundOutcome = "It's a Tie!";
+            outcomeColor = "orange"; 
+        } else if (
+            (userChoice === 'Scissors' && pcChoice === 'Paper') ||
+            (userChoice === 'Paper' && pcChoice === 'Rock') ||
+            (userChoice === 'Rock' && pcChoice === 'Scissors')
+        ) {
+            userScore++;
+            outcomeColor = "#32CD32"; // LimeGreen
+            if (userChoice === 'Scissors') roundOutcome = "You Win! Scissors cut Paper.";
+            else if (userChoice === 'Paper') roundOutcome = "You Win! Paper covers Rock.";
+            else roundOutcome = "You Win! Rock crushes Scissors.";
+        } else {
+            pcScore++;
+            outcomeColor = "red";
+            if (pcChoice === 'Scissors') roundOutcome = "You Lose! Scissors cut Paper.";
+            else if (pcChoice === 'Paper') roundOutcome = "You Lose! Paper covers Rock.";
+            else roundOutcome = "You Lose! Rock crushes Scissors.";
+        }
+
+        roundsPlayed++;
+
+        // Update UI
+        const resultDisplay = document.getElementById("result-display");
+        document.getElementById("pc-move-display").innerText = "PC chose " + pcChoice + " - You chose " + userChoice + ".";
+        
+        resultDisplay.innerText = roundOutcome;
+        resultDisplay.style.color = outcomeColor; 
+
+        document.getElementById("round-counter").innerText = roundsPlayed;
+        document.getElementById("user-points").innerText = userScore;
+        document.getElementById("pc-points").innerText = pcScore;
+
+        // Check for end of game
+        if (roundsPlayed === 15) { 
+            let finalResult = "";
+            if (userScore > pcScore) finalResult = "YOU WON THE GAME! 🎉";
+            else if (userScore === pcScore) finalResult = "IT'S A DRAW! 🤝";
+            else finalResult = "YOU LOST THE GAME! 😢";
+            
+            document.getElementById("final-message").innerText = finalResult;
+            document.getElementById("game-buttons").style.display = "none"; 
+            document.getElementById("btn-reset").style.display = "inline-block"; 
+        }
+    }
+
+    function resetGame() {
+        // Reset variables
+        roundsPlayed = 0;
+        userScore = 0;
+        pcScore = 0;
+
+        // Reset UI text
+        document.getElementById("round-counter").innerText = "0";
+        document.getElementById("user-points").innerText = "0";
+        document.getElementById("pc-points").innerText = "0";
+        document.getElementById("pc-move-display").innerText = "";
+        document.getElementById("result-display").innerText = "";
+        document.getElementById("final-message").innerText = "";
+
+        // Reset buttons
+        document.getElementById("game-buttons").style.display = "block"; 
+        document.getElementById("btn-reset").style.display = "none"; 
+    }
+</script>
+
+</body>
+</html>

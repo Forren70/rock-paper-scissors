@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasso Carta Forbice - Select Language</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            background-color: #4682B4; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container { 
+            background: #E1F5FE; 
+            padding: 40px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            max-width: 400px;
+        }
+        h1 { color: #001f3f; margin-bottom: 30px; }
+        .lang-box { display: flex; flex-direction: column; gap: 20px; }
+        .btn-lang { 
+            font-size: 22px; 
+            padding: 15px; 
+            cursor: pointer; 
+            border-radius: 10px; 
+            border: none; 
+            background-color: #007bff; 
+            color: white; 
+            text-decoration: none;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .btn-lang:hover { 
+            background-color: #0056b3; 
+            transform: scale(1.05);
+        }
+        .flag { margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Select Language</h1>
+    <div class="lang-box">
+        <a href="game_it.html" class="btn-lang"><span class="flag">🇮🇹</span>Italiano</a>
+        <a href="game_en.html" class="btn-lang"><span class="flag">🇬🇧</span>English</a>
+    </div>
+</div>
+
+</body>
+</html>

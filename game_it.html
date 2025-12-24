@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasso Carta Forbice</title>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            background-color: #4682B4; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 15px auto; 
+            background: #E1F5FE; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        button { 
+            font-size: 20px; 
+            margin: 10px; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            border: none; 
+            background-color: #007bff; 
+            color: white; 
+        }
+        button:hover { 
+            background-color: #0056b3; 
+        }
+        .result { 
+            margin-top: 20px; 
+        }
+        #esito {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .score { 
+            font-size: 1.2em; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="margin-bottom: 5px;">Carta, Forbice, Sasso</h1>
+    
+    <p id="benvenuto" style="font-size: 1.2rem; font-weight: bold; margin-top: 20px;">
+        Benvenuto! Scegli la tua mossa tra Carta, Forbice e Sasso.
+    </p>
+
+    <p>Il Sasso vince sulla Forbice (la rompe). La Forbice vince sulla Carta (la taglia). La Carta vince sul Sasso (lo avvolge).</p>
+
+    <div id="game-buttons">
+        <button onclick="gioca('Carta')">Carta ✋</button>
+        <button onclick="gioca('Forbice')">Forbice ✌️</button>
+        <button onclick="gioca('Sasso')">Sasso ✊</button>
+    </div>
+
+    <div class="result">
+        <p id="mossa-pc" style="font-weight: bold; color: #333;"></p>
+        <p id="esito"></p>
+    </div>
+
+    <div class="score">
+        <p style="color: #00008B; font-weight: bold;">
+            Giocate: <span id="num-giocate">0</span>/15
+        </p>
+        <p style="color: #00008B; font-weight: bold;">
+            Punteggio utente: <span id="punti-utente">0</span> - Punteggio PC: <span id="punti-pc">0</span>
+        </p>
+    </div>
+
+    <p id="messaggio-finale" style="color: red; font-weight: bold; font-size: 1.8rem;"></p>
+    
+    <button id="btn-reset" onclick="resetGioco()" style="display: none; background-color: #28a745;">Gioca di nuovo 🔄</button>
+    <br>
+    <a href="index.html" style="display: inline-block; margin-top: 20px; text-decoration: none; color: #4682B4; font-weight: bold;">
+    🏠 Torna alla selezione lingua
+</a>
+</div>
+
+<script>
+    let numeroGiocate = 0;
+    let punteggioUtente = 0;
+    let punteggioComputer = 0;
+
+    function gioca(sceltaUtente) {
+        if (numeroGiocate >= 15) return; 
+
+        const mossePossibili = ["Carta", "Forbice", "Sasso"];
+        const mossaPc = mossePossibili[Math.floor(Math.random() * 3)];
+        
+        let esitoTurno = "";
+        let coloreEsito = "";
+        
+        if (sceltaUtente === mossaPc) {
+            esitoTurno = "Pareggio!";
+            coloreEsito = "orange"; 
+        } else if (
+            (sceltaUtente === 'Forbice' && mossaPc === 'Carta') ||
+            (sceltaUtente === 'Carta' && mossaPc === 'Sasso') ||
+            (sceltaUtente === 'Sasso' && mossaPc === 'Forbice')
+        ) {
+            punteggioUtente++;
+            coloreEsito = "#32CD32"; 
+            if (sceltaUtente === 'Forbice') esitoTurno = "Hai vinto! Forbice taglia Carta.";
+            else if (sceltaUtente === 'Carta') esitoTurno = "Hai vinto! Carta avvolge Sasso.";
+            else esitoTurno = "Hai vinto! Sasso rompe Forbice.";
+        } else {
+            punteggioComputer++;
+            coloreEsito = "red";
+            if (mossaPc === 'Forbice') esitoTurno = "Hai perso! Forbice taglia Carta.";
+            else if (mossaPc === 'Carta') esitoTurno = "Hai perso! Carta avvolge Sasso.";
+            else esitoTurno = "Hai perso! Sasso rompe Forbice.";
+        }
+
+        numeroGiocate++;
+
+        const elEsito = document.getElementById("esito");
+        document.getElementById("mossa-pc").innerText = "Il PC ha scelto " + mossaPc + " - Tu hai scelto " + sceltaUtente + ".";
+        
+        elEsito.innerText = esitoTurno;
+        elEsito.style.color = coloreEsito; 
+
+        document.getElementById("num-giocate").innerText = numeroGiocate;
+        document.getElementById("punti-utente").innerText = punteggioUtente;
+        document.getElementById("punti-pc").innerText = punteggioComputer;
+
+        if (numeroGiocate === 15) { 
+            let finale = "";
+            if (punteggioUtente > punteggioComputer) finale = "HAI VINTO LA PARTITA! 🎉";
+            else if (punteggioUtente === punteggioComputer) finale = "PARTITA PAREGGIATA! 🤝";
+            else finale = "HAI PERSO LA PARTITA! 😢";
+            
+            document.getElementById("messaggio-finale").innerText = finale;
+            document.getElementById("game-buttons").style.display = "none"; 
+            document.getElementById("btn-reset").style.display = "inline-block"; 
+        }
+    }
+
+    function resetGioco() {
+        numeroGiocate = 0;
+        punteggioUtente = 0;
+        punteggioComputer = 0;
+
+        document.getElementById("num-giocate").innerText = "0";
+        document.getElementById("punti-utente").innerText = "0";
+        document.getElementById("punti-pc").innerText = "0";
+        document.getElementById("mossa-pc").innerText = "";
+        document.getElementById("esito").innerText = "";
+        document.getElementById("messaggio-finale").innerText = "";
+
+        document.getElementById("game-buttons").style.display = "block"; 
+        document.getElementById("btn-reset").style.display = "none"; 
+    }
+</script>
+
+</body>
+</html>
